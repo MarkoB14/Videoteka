@@ -8,6 +8,7 @@ Implementirano:
 	10. Izbornik/podizbornici
 	12. Upotreba pokazivača
 	13. Upotreba struktura i funckija
+	15. Statička polja?
 	16. Dinamičko zauzimanje
 	17. Koristi se calloc()
 	18. Sigurno brisanje memorije
@@ -20,7 +21,6 @@ Za implementirati:
 	9. Makro ili inline funkcije
 	11. Kod izbornika koristiti enum ili makro
 	14. Zaštita parametara svih funkcija
-	15. Statička polja?
 	21. Koristiti remove(), rename()
 	22. Koristiti errno, perror(), sterror()…
 	23. Sortirati (qsort)
