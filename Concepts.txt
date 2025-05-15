@@ -1,0 +1,30 @@
+Implementirano:
+	1. CRUID
+	2. Primitivni tipovi podataka
+	3. Složeni tipovi podataka
+	4. Primjena typedef
+	5. Imenovanje identifikatora
+	7. Organizacija izvornog koda 
+	10. Izbornik/podizbornici
+	12. Upotreba pokazivača
+	13. Upotreba struktura i funckija
+	16. Dinamičko zauzimanje
+	17. Koristi se calloc()
+	18. Sigurno brisanje memorije
+	19. Koristi se binarna datoteka
+	20. Koriste se fseek() i rewind()
+	
+Za implementirati:
+	6. Primjena static za varijable
+	8. Primjena extern za globalne varijable
+	9. Makro ili inline funkcije
+	11. Kod izbornika koristiti enum ili makro
+	14. Zaštita parametara svih funkcija
+	15. Statička polja?
+	21. Koristiti remove(), rename()
+	22. Koristiti errno, perror(), sterror()…
+	23. Sortirati (qsort)
+	24. Pretraživati s bsearch()
+	25. Koristiti rekruziju qucik sorta
+	26. Pokazivači na funkcije upotrebom qsort() ili bsearch()
+	
