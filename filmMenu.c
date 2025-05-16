@@ -2,11 +2,18 @@
 #include <stdio.h>
 #include "functions.h"
 
-int noFilms = 0;
+typedef enum {
+    SHOWALL = 1,
+    SEARCH = 2,
+    INSERT = 3,
+    DELETE = 4,
+    UPDATE = 5,
+    RETURN = 0
+}filmMenuOptions;
 
 int filmMenu() {
 
-    clearConsole();
+    CLEAR_CONSOLE();
 
     printf("\n");
     printf("*********************************\n");
@@ -25,22 +32,22 @@ int filmMenu() {
 	getchar();
 
     switch (option) {
-    case 1:
+    case SHOWALL:
         showAllFilms(1);
         break;
-    case 2:
+    case SEARCH:
         printf("\nPRETRAGA!\n");
         break;
-    case 3:
+    case INSERT:
         addFilm();
         break;
-    case 4:
+    case DELETE:
         deleteFilm();
         break;
-    case 5:
+    case UPDATE:
         updateFilm();
         break;
-    case 0:
+    case RETURN:
         return 0;
     default:
         printf("\nNepoznata opcija! Pokusajte ponovo.\n");

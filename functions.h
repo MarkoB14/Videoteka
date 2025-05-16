@@ -3,6 +3,12 @@
 
 #include "DATATYPE_H.h"
 
+#ifdef _WIN32
+	#define CLEAR_CONSOLE() system ("cls")
+#else
+	#define CLEAR_CONSOLE() system ("clear")
+#endif
+
 void clearConsole();
 int mainMenu();
 int filmMenu();

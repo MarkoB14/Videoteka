@@ -2,9 +2,15 @@
 #include <stdio.h>
 #include "functions.h"
 
+typedef enum {
+    FILMOVI = 1,
+    KORISNICI = 2,
+    IZLAZ = 0
+}mainMenuOptions;
+
 int mainMenu() {
 
-    clearConsole();
+    CLEAR_CONSOLE();
 
     printf("\n");
     printf("*********************************\n");
@@ -20,16 +26,16 @@ int mainMenu() {
     scanf("%hu", &option);
     getchar();
 
-    switch (option) {
-    case 1:
+    switch ((mainMenuOptions)option) {
+    case FILMOVI:
         while (condition) {
             condition = filmMenu();
         }
         break;
-    case 2:
+    case KORISNICI:
         printf("\nOdabrali ste opciju 'KORISNICI'.\n");
         break;
-    case 0:
+    case IZLAZ:
         printf("\nHvala sto ste koristili videoteku. Dovidjenja!\n");
         return 0;
     default:

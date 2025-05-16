@@ -3,15 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "DATATYPE_H.h"
-
-void clearConsole() {
-
-	#ifdef _WIN32
-		system("cls");
-	#else
-		system("clear");
-	#endif
-}
+#include "functions.h"
 
 void createFile() {
     FILE* pF = fopen("films.bin", "wb");
@@ -47,7 +39,7 @@ void readFilms(int* noFilms, FILM** arrayFilms) {
 
 void addFilm() {
 
-	clearConsole();
+	CLEAR_CONSOLE();
 
 	FILM tempFilm = { 0 };
 	int noFilms = 0;
@@ -103,7 +95,7 @@ void addFilm() {
 
 void showAllFilms(short unsigned enter) {
 
-	clearConsole();
+	CLEAR_CONSOLE();
 
 	FILE* pF = fopen("films.bin", "rb");
 	int noFilms = 0;
@@ -144,7 +136,7 @@ void showAllFilms(short unsigned enter) {
 
 void deleteFilm() {
 
-	clearConsole();
+	CLEAR_CONSOLE();
 
 	int noFilms = 0;
 	int id = -1;
@@ -198,7 +190,7 @@ void deleteFilm() {
 }
 
 void updateFilm() {
-	clearConsole();
+	CLEAR_CONSOLE();
 	int noFilms = 0;
 	int id = -1;
 	FILM* arrayFilms = NULL;

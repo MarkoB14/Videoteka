@@ -1,18 +1,28 @@
 #ifndef DATATYPE_H
 #define DATATYPE_H
 
-typedef enum genre {
-	DRAMA,
-	KOMEDIJA,
-	AKCIJA,
-	SCIFI,
-	FANTAZIJA,
-	HOROR,
-	TRILER,
-	ROMANSA,
-	MISTERIJA,
-	ANIMIRANI
-}GENRE;
+typedef enum genre{
+    AKCIJA,
+    AVANTURA,
+    KOMEDIJA,
+    DRAMA,
+    HOROR,
+    TRILER,
+    ZNANSTVENA_FANTASTIKA,
+    FANTAZIJA,
+    KRIMINALISTICKI,
+    MISTERIJA,
+    ROMANSA,
+    RATNI,
+    WESTERN,
+    ANIMIRANI,
+    DOKUMENTARNI,
+    BIOGRAFSKI,
+    MJUZIKL,
+    PORODICNI,
+    SPORT,
+    POVIJESNI
+} GENRE;
 
 typedef struct film {
 	int id;
