@@ -1,18 +1,19 @@
+#include "stdio.h"
 #ifndef functions
 #define functions
 
 #include "DATATYPE_H.h"
 
 #ifdef _WIN32
-	#define CLEAR_CONSOLE() system ("cls")
+	#define CLEAR_CONSOLE() system("cls")
 #else
-	#define CLEAR_CONSOLE() system ("clear")
+	#define CLEAR_CONSOLE() system("clear")
 #endif
 
-void clearConsole();
 int mainMenu();
 int filmMenu();
 void createFile();
+FILE* openFile(const char* mode);
 void readFilms(int* noFilms, FILM** arrayFilms);
 void addFilm();
 void showAllFilms(short unsigned enter);

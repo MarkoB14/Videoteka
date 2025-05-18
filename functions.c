@@ -1,5 +1,4 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "DATATYPE_H.h"
@@ -8,7 +7,7 @@
 void createFile() {
     FILE* pF = fopen("films.bin", "wb");
     if (pF == NULL) {
-        printf("\nGreška pri kreiranju datoteke films.bin!\n");
+		perror("\nGreška pri kreiranju datoteke films.bin!\n");
 		exit(EXIT_FAILURE);
     }
 
@@ -19,12 +18,16 @@ void createFile() {
     printf("\nDatoteka nije postojala, pa je morala biti kreirana!\n");
 }
 
-void readFilms(int* noFilms, FILM** arrayFilms) {
-	FILE* pF = fopen("films.bin", "rb");
+FILE* openFile(const char* mode) {
+	FILE* pF = fopen("films.bin", mode);
 	if (pF == NULL) {
 		createFile();
-		pF = fopen("films.bin", "rb");
 	}
+	return pF;
+}
+
+void readFilms(int* noFilms, FILM** arrayFilms) {
+	FILE* pF = openFile("rb");
 	fread(noFilms, sizeof(int), 1, pF);
 	*arrayFilms = (FILM*)calloc(*noFilms, sizeof(FILM));
 	if (*arrayFilms == NULL) {
@@ -44,11 +47,7 @@ void addFilm() {
 	FILM tempFilm = { 0 };
 	int noFilms = 0;
 
-	FILE* pF = fopen("films.bin", "rb+");
-	if (pF == NULL) {
-		createFile();
-		pF = fopen("films.bin", "rb+");
-	}
+	FILE* pF = openFile("rb+");
 
 	fread(&noFilms, sizeof(int), 1, pF);
 	tempFilm.id = noFilms;
@@ -64,13 +63,19 @@ void addFilm() {
 	do
 	{
 		printf("* 2. ZANR: ");
-		printf("\n0) DRAMA     1) KOMEDIJA");
-		printf("\n2) AKCIJA    3) SCIFI");
-		printf("\n4) FANTAZIJA 5) HOROR");
-		printf("\n6) TRILER    7) ROMANSA");
-		printf("\n8) MISTERIJA 9) ANIMIRANI\n");
+		printf("\n0) AKCIJA                   1) AVANTURA");
+		printf("\n2) KOMEDIJA                 3) DRAMA");
+		printf("\n4) HOROR                    5) TRILER");
+		printf("\n6) ZNANSTVENA FANTASTIKA    7) FANTAZIJA");
+		printf("\n8) KRIMINALISTICKI          9) MISTERIJA");
+		printf("\n10) ROMANSA                 11) RATNI");
+		printf("\n12) WESTERN                 13) ANIMIRANI");
+		printf("\n15) DOKUMENTARNI            14) MJUZIKL");
+		printf("\n16) OBITELJSKI              17) SPORT");
+		printf("\n18) POVIJESNI                        \n");
+
 		scanf(" %d", &tempFilm.genre);
-	} while (tempFilm.genre < 0 || tempFilm.genre > 9);
+	} while (tempFilm.genre < 0 || tempFilm.genre > 18);
 	
 
 	printf("* 3. TRAJANJE: ");
@@ -97,15 +102,11 @@ void showAllFilms(short unsigned enter) {
 
 	CLEAR_CONSOLE();
 
-	FILE* pF = fopen("films.bin", "rb");
 	int noFilms = 0;
 	FILM* arrayFilms = NULL;
 	
-	if (pF == NULL) {
-		createFile();
-		pF = fopen("films.bin", "rb");
-	}
-	
+	FILE* pF = openFile("rb");
+
 	readFilms(&noFilms, &arrayFilms);
 	if(arrayFilms == NULL) {
 		printf("\nNema filmova za ispis!\n");
@@ -190,29 +191,38 @@ void deleteFilm() {
 }
 
 void updateFilm() {
+
 	CLEAR_CONSOLE();
+
 	int noFilms = 0;
 	int id = -1;
+
 	FILM* arrayFilms = NULL;
 	readFilms(&noFilms, &arrayFilms);
+
 	if (noFilms == 0) {
 		printf("\nNema filmova za azurirati!\n");
 		getchar();
 		return;
 	}
+
 	if (arrayFilms == NULL) {
 		printf("\nNedovoljno memorije za ucitavanje filmova!\n");
 		getchar();
 		return;
 	}
+
 	showAllFilms(0);
+
 	do {
 		printf("\nUnesite ID filma koji zelite azurirati: ");
 		scanf(" %d", &id);
 		getchar();
 	} while (id < 0 || id >= noFilms);
+
 	FILM tempFilm = { 0 };
 	tempFilm.id = id;
+
 	printf("\n");
 	printf("*********************************\n");
 	printf("*    AZURIRANJE FILMA   *\n");
@@ -222,25 +232,33 @@ void updateFilm() {
 	do
 	{
 		printf("* 2. ZANR: ");
-		printf("\n0) DRAMA     1) KOMEDIJA");
-		printf("\n2) AKCIJA    3) SCIFI");
-		printf("\n4) FANTAZIJA 5) HOROR");
-		printf("\n6) TRILER    7) ROMANSA");
-		printf("\n8) MISTERIJA 9) ANIMIRANI\n");
+		printf("\n0) AKCIJA                   1) AVANTURA");
+		printf("\n2) KOMEDIJA                 3) DRAMA");
+		printf("\n4) HOROR                    5) TRILER");
+		printf("\n6) ZNANSTVENA FANTASTIKA    7) FANTAZIJA");
+		printf("\n8) KRIMINALISTICKI          9) MISTERIJA\n");
+		printf("\n10) ROMANSA                 11) RATNI\n");
+		printf("\n12) WESTERN                 13) ANIMIRANI\n");
+		printf("\n15) DOKUMENTARNI            14) MJUZIKL\n");
+		printf("\n16) OBITELJSKI              17) SPORT\n");
+		printf("\n18) POVIJESNI                        \n");
+
 		scanf(" %d", &tempFilm.genre);
-	} while (tempFilm.genre < 0 || tempFilm.genre > 9);
+	} while (tempFilm.genre < 0 || tempFilm.genre > 18);
+
 	printf("* 3. TRAJANJE: ");
 	scanf(" %d", &tempFilm.duration);
+
 	printf("* 4. GODINA IZDANJA: ");
 	scanf(" %d", &tempFilm.year);
+
 	printf("* 5. BROJ PRIMJERAKA: ");
 	scanf(" %d", &tempFilm.copies);
+
 	printf("*********************************\n");
-	FILE* pF = fopen("films.bin", "rb+");
-	if (pF == NULL) {
-		printf("\nGreška pri otvaranju datoteke films.bin!\n");
-		return;
-	}
+
+	FILE * pF = openFile("rb+");
+	
 	fseek(pF, sizeof(int) + id * sizeof(FILM), SEEK_SET);
 	fwrite(&tempFilm, sizeof(FILM), 1, pF);
 

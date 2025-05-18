@@ -17,9 +17,8 @@ typedef enum genre{
     WESTERN,
     ANIMIRANI,
     DOKUMENTARNI,
-    BIOGRAFSKI,
     MJUZIKL,
-    PORODICNI,
+    OBITELJSKI,
     SPORT,
     POVIJESNI
 } GENRE;
