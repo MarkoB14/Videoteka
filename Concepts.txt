@@ -17,13 +17,13 @@ Implementirano:
 	19. Koristi se binarna datoteka
 	20. Koriste se fseek() i rewind()
 	22. Koristiti errno, perror(), sterror()…
+	23. Sortirati (qsort)
+	24. Pretraživati s bsearch()
 	
 Za implementirati:
 	6. Primjena static za varijable
 	8. Primjena extern za globalne varijable
 	14. Zaštita parametara svih funkcija
 	21. Koristiti remove(), rename()
-	23. Sortirati (qsort)
-	24. Pretraživati s bsearch()
 	25. Koristiti rekruziju qucik sorta
 	26. Pokazivači na funkcije upotrebom qsort() ili bsearch()
