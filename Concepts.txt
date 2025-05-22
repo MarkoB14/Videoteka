@@ -4,6 +4,7 @@ Implementirano:
 	3. Složeni tipovi podataka
 	4. Primjena typedef
 	5. Imenovanje identifikatora
+	6. Primjena static za varijable
 	7. Organizacija izvornog koda
 	9. Makro ili inline funkcije
 	10. Izbornik/podizbornici
@@ -21,7 +22,6 @@ Implementirano:
 	24. Pretraživati s bsearch()
 	
 Za implementirati:
-	6. Primjena static za varijable
 	8. Primjena extern za globalne varijable
 	14. Zaštita parametara svih funkcija
 	21. Koristiti remove(), rename()
