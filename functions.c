@@ -43,50 +43,17 @@ void readFilms(int* noFilms, FILM** arrayFilms) {
 }
 
 char* genrePrint(GENRE genre) {
-	switch (genre) {
-		case AKCIJA:
-			return "AKCIJA";
-		case AVANTURA:
-			return "AVANTURA";
-		case KOMEDIJA:
-			return "KOMEDIJA";
-		case DRAMA:
-			return "DRAMA";
-		case HOROR:
-			return "HOROR";
-		case TRILER:
-			return "TRILER";
-		case ZNANSTVENA_FANTASTIKA :
-			return "ZNANSTVENA FANTASTIKA";
-		case FANTAZIJA:
-			return "FANTAZIJA";
-		case KRIMINALISTICKI:
-			return "KRIMINALISTICKI";
-		case MISTERIJA:
-			return "MISTERIJA";
-		case ROMANSA:
-			return "ROMANSA";
-		case RATNI:
-			return "RATNI";
-		case WESTERN:
-			return "WESTERN";
-		case ANIMIRANI:
-			return "ANIMIRANI";
-		case DOKUMENTARNI:
-			return "DOKUMENTARNI";
-		case MJUZIKL:
-			return "MJUZIKL";
-		case OBITELJSKI:
-			return "OBITELJSKI";
-		case SPORT:
-			return "SPORT";
-		case POVIJESNI:
-			return "POVIJESNI";
-		
-		default:
-			return "-";
-			break;
-	}
+	static const char* genreNames[] = {
+		"AKCIJA", "AVANTURA", "KOMEDIJA", "DRAMA", "HOROR", "TRILER",
+		"ZNANSTVENA FANTASTIKA", "FANTAZIJA", "KRIMINALISTICKI", "MISTERIJA",
+		"ROMANSA", "RATNI", "WESTERN", "ANIMIRANI", "DOKUMENTARNI",
+		"MJUZIKL", "OBITELJSKI", "SPORT", "POVIJESNI"
+	};
+
+	if (genre < 0 || genre >= sizeof(genreNames) / sizeof(genreNames[0]))
+		return "-";
+
+	return (char*)genreNames[genre];
 }
 
 void addFilm() {
@@ -200,12 +167,6 @@ void deleteFilm() {
 		return;
 	}
 
-	if (arrayFilms == NULL) {
-		printf("\nNedovoljno memorije za ucitavanje filmova!\n");
-		getchar();
-		return;
-	}
-
 	showAllFilms(0);
 
 	do {
@@ -251,12 +212,6 @@ void updateFilm() {
 
 	if (noFilms == 0) {
 		printf("\nNema filmova za azurirati!\n");
-		getchar();
-		return;
-	}
-
-	if (arrayFilms == NULL) {
-		printf("\nNedovoljno memorije za ucitavanje filmova!\n");
 		getchar();
 		return;
 	}
