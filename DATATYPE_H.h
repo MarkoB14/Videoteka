@@ -34,8 +34,8 @@ typedef struct film {
 
 typedef struct user {
 	int id;
-	char name[21];
-	char lastname[21];
+	char name[31];
+	char lastname[31];
 	short noMovies;
 	int* movies;
 } USER;

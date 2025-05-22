@@ -36,7 +36,7 @@ int filmMenu() {
         showAllFilms(1);
         break;
     case SEARCH:
-        printf("\nPRETRAGA!\n");
+        filmSearch();
         break;
     case INSERT:
         addFilm();

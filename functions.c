@@ -4,6 +4,7 @@
 #include "DATATYPE_H.h"
 #include "functions.h"
 
+
 void createFile() {
     FILE* pF = fopen("films.bin", "wb");
     if (pF == NULL) {
@@ -22,6 +23,7 @@ FILE* openFile(const char* mode) {
 	FILE* pF = fopen("films.bin", mode);
 	if (pF == NULL) {
 		createFile();
+		pF = fopen("films.bin", mode);
 	}
 	return pF;
 }
@@ -38,6 +40,53 @@ void readFilms(int* noFilms, FILM** arrayFilms) {
 	fseek(pF, sizeof(int), SEEK_SET);
 	fread(*arrayFilms, sizeof(FILM), *noFilms, pF);
 	fclose(pF);
+}
+
+char* genrePrint(GENRE genre) {
+	switch (genre) {
+		case AKCIJA:
+			return "AKCIJA";
+		case AVANTURA:
+			return "AVANTURA";
+		case KOMEDIJA:
+			return "KOMEDIJA";
+		case DRAMA:
+			return "DRAMA";
+		case HOROR:
+			return "HOROR";
+		case TRILER:
+			return "TRILER";
+		case ZNANSTVENA_FANTASTIKA :
+			return "ZNANSTVENA FANTASTIKA";
+		case FANTAZIJA:
+			return "FANTAZIJA";
+		case KRIMINALISTICKI:
+			return "KRIMINALISTICKI";
+		case MISTERIJA:
+			return "MISTERIJA";
+		case ROMANSA:
+			return "ROMANSA";
+		case RATNI:
+			return "RATNI";
+		case WESTERN:
+			return "WESTERN";
+		case ANIMIRANI:
+			return "ANIMIRANI";
+		case DOKUMENTARNI:
+			return "DOKUMENTARNI";
+		case MJUZIKL:
+			return "MJUZIKL";
+		case OBITELJSKI:
+			return "OBITELJSKI";
+		case SPORT:
+			return "SPORT";
+		case POVIJESNI:
+			return "POVIJESNI";
+		
+		default:
+			return "-";
+			break;
+	}
 }
 
 void addFilm() {
@@ -72,7 +121,7 @@ void addFilm() {
 		printf("\n12) WESTERN                 13) ANIMIRANI");
 		printf("\n15) DOKUMENTARNI            14) MJUZIKL");
 		printf("\n16) OBITELJSKI              17) SPORT");
-		printf("\n18) POVIJESNI                        \n");
+		printf("\n18) POVIJESNI                        \n\n");
 
 		scanf(" %d", &tempFilm.genre);
 	} while (tempFilm.genre < 0 || tempFilm.genre > 18);
@@ -116,12 +165,12 @@ void showAllFilms(short unsigned enter) {
 	}
 
 	printf("** ISPIS SVIH FILMOVA **\n");
-	printf("%-5s %-30s %-10s %-15s %-20s %-15s\n", "ID", "Ime filma", "Zanr", "Trajanje", "Godina Izdanja", "Broj primjeraka");
+	printf("%-5s %-30s %-30s %-15s %-20s %-15s \n", "ID", "Ime filma", "Zanr", "Trajanje", "Godina Izdanja", "Broj primjeraka");
 
-	printf("--------------------------------------------------------------------------------------------------\n");
+	printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
 	for (int i = 0; i < noFilms; i++) {
-		printf("%-5d %-30s %-10d %-15d %-20d %-15d\n", (arrayFilms + i)->id, (arrayFilms + i)->name, (arrayFilms + i)->genre, (arrayFilms + i)->duration, (arrayFilms + i)->year, (arrayFilms + i)->copies);
+		printf("%-5d %-30s %-30s %-15d %-20d %-15d\n", (arrayFilms + i)->id, (arrayFilms + i)->name, genrePrint((arrayFilms+i)->genre),(arrayFilms + i)->duration, (arrayFilms + i)->year, (arrayFilms + i)->copies);
 	}
 
 	arrayFilms = NULL;
@@ -265,4 +314,64 @@ void updateFilm() {
 	fclose(pF);
 	arrayFilms = NULL;
 	free(arrayFilms);
+}
+
+int compareFilmsByName(const void* a, const void* b) {
+	const FILM* filmA = (const FILM*)a;
+	const FILM* filmB = (const FILM*)b;
+	return strcmp(filmA->name, filmB->name);
+}
+
+int compareFilmNameKey(const void* key, const void* element) {
+	const char* nameKey = (const char*)key;
+	const FILM* film = (const FILM*)element;
+	return strcmp(nameKey, film->name);
+}
+
+void sortFilmsByName(FILM* arrayFilms, int noFilms) {
+	if (arrayFilms == NULL || noFilms <= 1) {
+		return;
+	}
+	qsort(arrayFilms, noFilms, sizeof(FILM), compareFilmsByName);
+}
+
+
+void filmSearch() {
+
+	CLEAR_CONSOLE();
+
+	int noFilms;
+	FILM* arrayFilms = NULL;
+	FILM* foundFilm = NULL;
+
+	char filmName[51];
+
+	printf("*********************************\n");
+	printf("*    PRETRAGA FILMA   *\n");
+	printf("* IME: ");
+	fgets(filmName, sizeof(filmName), stdin);
+	filmName[strcspn(filmName, "\n")] = '\0';
+
+	readFilms(&noFilms, &arrayFilms);
+
+	sortFilmsByName(arrayFilms, noFilms);
+
+	foundFilm = (FILM*)bsearch(filmName, arrayFilms, noFilms, sizeof(FILM), compareFilmNameKey);
+
+	if (foundFilm != NULL) {
+		printf("FILM PRONADJEN!\n");
+
+		printf("%-5s %-30s %-30s %-15s %-20s %-15s \n", "ID", "Ime filma", "Zanr", "Trajanje", "Godina Izdanja", "Broj primjeraka");
+
+		printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+		printf("%-5d %-30s %-30s %-15d %-20d %-15d\n", foundFilm->id, foundFilm->name, genrePrint(foundFilm->genre), foundFilm->duration, foundFilm->year, foundFilm->copies);
+		
+	}
+	else {
+		printf("FILM NIJE PRONADJEN!");
+	}
+
+	printf("\nPritisnite 'ENTER' za povratak u izbornik...\n");
+	getchar();
 }
