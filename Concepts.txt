@@ -6,24 +6,25 @@ Implementirano:
 	5. Imenovanje identifikatora
 	6. Primjena static za varijable
 	7. Organizacija izvornog koda
+	8. Primjena extern za globalne varijable
 	9. Makro ili inline funkcije
 	10. Izbornik/podizbornici
 	11. Kod izbornika koristiti enum ili makro
 	12. Upotreba pokazivača
 	13. Upotreba struktura i funckija
-	15. Statička polja?
+	14. Zaštita parametara svih funkcija
+	15. Statička polja
 	16. Dinamičko zauzimanje
 	17. Koristi se calloc()
 	18. Sigurno brisanje memorije
 	19. Koristi se binarna datoteka
 	20. Koriste se fseek() i rewind()
+	21. Koristiti remove(), rename()
 	22. Koristiti errno, perror(), sterror()…
 	23. Sortirati (qsort)
 	24. Pretraživati s bsearch()
-	
-Za implementirati:
-	8. Primjena extern za globalne varijable
-	14. Zaštita parametara svih funkcija
-	21. Koristiti remove(), rename()
 	25. Koristiti rekruziju qucik sorta
 	26. Pokazivači na funkcije upotrebom qsort() ili bsearch()
+	
+Za implementirati:
+	

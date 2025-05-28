@@ -4,6 +4,7 @@
 #include "DATATYPE_H.h"
 #include "functions.h"
 
+extern int noFilms;
 
 void createFile() {
     FILE* pF = fopen("films.bin", "wb");
@@ -12,7 +13,7 @@ void createFile() {
 		exit(EXIT_FAILURE);
     }
 
-    int noFilms = 0;
+    noFilms = 0;
     fwrite(&noFilms, sizeof(int), 1, pF);
 
     fclose(pF);
@@ -28,21 +29,21 @@ FILE* openFile(const char* mode) {
 	return pF;
 }
 
-void readFilms(int* noFilms, FILM** arrayFilms) {
+void readFilms(FILM** arrayFilms) {
 	FILE* pF = openFile("rb");
-	fread(noFilms, sizeof(int), 1, pF);
-	*arrayFilms = (FILM*)calloc(*noFilms, sizeof(FILM));
+	fread(&noFilms, sizeof(int), 1, pF);
+	*arrayFilms = (FILM*)calloc(noFilms, sizeof(FILM));
 	if (*arrayFilms == NULL) {
 		printf("\nNedovoljno memorije za ucitavanje filmova!\n");
 		fclose(pF);
 		return;	
 	}
 	fseek(pF, sizeof(int), SEEK_SET);
-	fread(*arrayFilms, sizeof(FILM), *noFilms, pF);
+	fread(*arrayFilms, sizeof(FILM), noFilms, pF);
 	fclose(pF);
 }
 
-char* genrePrint(GENRE genre) {
+char* genrePrint(const GENRE genre) {
 	static const char* genreNames[] = {
 		"AKCIJA", "AVANTURA", "KOMEDIJA", "DRAMA", "HOROR", "TRILER",
 		"ZNANSTVENA FANTASTIKA", "FANTAZIJA", "KRIMINALISTICKI", "MISTERIJA",
@@ -61,11 +62,9 @@ void addFilm() {
 	CLEAR_CONSOLE();
 
 	FILM tempFilm = { 0 };
-	int noFilms = 0;
 
 	FILE* pF = openFile("rb+");
 
-	fread(&noFilms, sizeof(int), 1, pF);
 	tempFilm.id = noFilms;
 
 	printf("\n");
@@ -114,16 +113,15 @@ void addFilm() {
 	fclose(pF);
 }
 
-void showAllFilms(short unsigned enter) {
+void showAllFilms(const short unsigned enter) {
 
 	CLEAR_CONSOLE();
 
-	int noFilms = 0;
 	FILM* arrayFilms = NULL;
 	
 	FILE* pF = openFile("rb");
 
-	readFilms(&noFilms, &arrayFilms);
+	readFilms(&arrayFilms);
 	if(arrayFilms == NULL) {
 		printf("\nNema filmova za ispis!\n");
 		fclose(pF);
@@ -151,15 +149,14 @@ void showAllFilms(short unsigned enter) {
 	
 }
 
-void deleteFilm() {
+void removeFilm() {
 
 	CLEAR_CONSOLE();
 
-	int noFilms = 0;
 	int id = -1;
 	FILM* arrayFilms = NULL;
 
-	readFilms(&noFilms, &arrayFilms);
+	readFilms(&arrayFilms);
 
 	if (noFilms == 0) {
 		printf("\nNema filmova za brisanje!\n");
@@ -204,11 +201,10 @@ void updateFilm() {
 
 	CLEAR_CONSOLE();
 
-	int noFilms = 0;
 	int id = -1;
 
 	FILM* arrayFilms = NULL;
-	readFilms(&noFilms, &arrayFilms);
+	readFilms(&arrayFilms);
 
 	if (noFilms == 0) {
 		printf("\nNema filmova za azurirati!\n");
@@ -283,7 +279,7 @@ int compareFilmNameKey(const void* key, const void* element) {
 	return strcmp(nameKey, film->name);
 }
 
-void sortFilmsByName(FILM* arrayFilms, int noFilms) {
+void sortFilmsByName(FILM* arrayFilms) {
 	if (arrayFilms == NULL || noFilms <= 1) {
 		return;
 	}
@@ -295,7 +291,6 @@ void filmSearch() {
 
 	CLEAR_CONSOLE();
 
-	int noFilms;
 	FILM* arrayFilms = NULL;
 	FILM* foundFilm = NULL;
 
@@ -307,9 +302,9 @@ void filmSearch() {
 	fgets(filmName, sizeof(filmName), stdin);
 	filmName[strcspn(filmName, "\n")] = '\0';
 
-	readFilms(&noFilms, &arrayFilms);
+	readFilms(&arrayFilms);
 
-	sortFilmsByName(arrayFilms, noFilms);
+	sortFilmsByName(arrayFilms);
 
 	foundFilm = (FILM*)bsearch(filmName, arrayFilms, noFilms, sizeof(FILM), compareFilmNameKey);
 
@@ -329,4 +324,14 @@ void filmSearch() {
 
 	printf("\nPritisnite 'ENTER' za povratak u izbornik...\n");
 	getchar();
+}
+
+void deleteFile() {
+	printf("Zelite li uistinu obrisati datoteku 'films.bin'?\n");
+	printf("Utipkajte 'da' ako uistinu zelite obrisati datoteku u suprotno utipkajte 'ne' !\n");
+	char potvrda[3] = { '\0' };
+	scanf("%2s", potvrda);
+	if (!strcmp("da", potvrda)) {
+		remove("films.bin") == 0 ? printf("Uspjesno obrisana datoteka!\n") : printf("Neuspjesno brisanje datoteke!\n");
+	}
 }
