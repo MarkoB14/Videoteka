@@ -5,6 +5,7 @@
 #include "functions.h"
 
 extern int noFilms;
+static int nextID;
 
 void createFile() {
     FILE* pF = fopen("films.bin", "wb");
@@ -14,6 +15,7 @@ void createFile() {
     }
 
     noFilms = 0;
+	nextID = 0;
     fwrite(&noFilms, sizeof(int), 1, pF);
 
     fclose(pF);
@@ -32,6 +34,8 @@ FILE* openFile(const char* mode) {
 void readFilms(FILM** arrayFilms) {
 	FILE* pF = openFile("rb");
 	fread(&noFilms, sizeof(int), 1, pF);
+	fseek(pF, noFilms * sizeof(FILM), SEEK_CUR);
+	fread(&nextID, sizeof(int), 1, pF);
 	*arrayFilms = (FILM*)calloc(noFilms, sizeof(FILM));
 	if (*arrayFilms == NULL) {
 		printf("\nNedovoljno memorije za ucitavanje filmova!\n");
@@ -65,7 +69,7 @@ void addFilm() {
 
 	FILE* pF = openFile("rb+");
 
-	tempFilm.id = noFilms;
+	tempFilm.id = nextID;
 
 	printf("\n");
 	printf("*********************************\n");
@@ -107,6 +111,7 @@ void addFilm() {
 	fwrite(&tempFilm, sizeof(FILM), 1, pF);
 
 	noFilms++;
+	nextID++;
 	rewind(pF);
 	fwrite(&noFilms, sizeof(int), 1, pF);
 
@@ -181,9 +186,6 @@ void removeFilm() {
 
 	for(int i = 0;i < noFilms; i++) {
 		if((arrayFilms + i)->id != id) {
-			if ((arrayFilms + i)->id > id) {
-				(arrayFilms + i)->id--;
-			}
 			fwrite((arrayFilms + i), sizeof(FILM), 1, pF);
 		}
 	}
