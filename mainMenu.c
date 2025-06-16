@@ -4,7 +4,6 @@
 
 typedef enum {
     FILMOVI = 1,
-    KORISNICI = 2,
     IZLAZ = 0
 }mainMenuOptions;
 
@@ -17,7 +16,6 @@ int mainMenu() {
     printf("*    Dobrodosli u Videoteku!   *\n");
     printf("*********************************\n");
     printf("  1. FILMOVI                    \n");
-    printf("  2. KORISNICI                  \n");
     printf("  0. IZLAZ IZ PROGRAMA          \n");
     printf("*********************************\n");
 
@@ -31,9 +29,6 @@ int mainMenu() {
         while (condition) {
             condition = filmMenu();
         }
-        break;
-    case KORISNICI:
-        printf("\nOdabrali ste opciju 'KORISNICI'.\n");
         break;
     case IZLAZ:
         printf("\nHvala sto ste koristili videoteku. Dovidjenja!\n");

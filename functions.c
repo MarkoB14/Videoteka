@@ -137,7 +137,7 @@ void showAllFilms(const short unsigned enter) {
 	printf("** ISPIS SVIH FILMOVA **\n");
 	printf("%-5s %-30s %-30s %-15s %-20s %-15s \n", "ID", "Ime filma", "Zanr", "Trajanje", "Godina Izdanja", "Broj primjeraka");
 
-	printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+	printf("------------------------------------------------------------------------------------------------------------------------ \n");
 
 	for (int i = 0; i < noFilms; i++) {
 		printf("%-5d %-30s %-30s %-15d %-20d %-15d\n", (arrayFilms + i)->id, (arrayFilms + i)->name, genrePrint((arrayFilms+i)->genre),(arrayFilms + i)->duration, (arrayFilms + i)->year, (arrayFilms + i)->copies);
@@ -315,7 +315,7 @@ void filmSearch() {
 
 		printf("%-5s %-30s %-30s %-15s %-20s %-15s \n", "ID", "Ime filma", "Zanr", "Trajanje", "Godina Izdanja", "Broj primjeraka");
 
-		printf("--------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+		printf("------------------------------------------------------------------------------------------------------------------------\n");
 
 		printf("%-5d %-30s %-30s %-15d %-20d %-15d\n", foundFilm->id, foundFilm->name, genrePrint(foundFilm->genre), foundFilm->duration, foundFilm->year, foundFilm->copies);
 		
