@@ -5,7 +5,7 @@
 #include "functions.h"
 
 extern int noFilms;
-static int nextID;
+int nextID;
 
 void createFile() {
     FILE* pF = fopen("films.bin", "wb");
@@ -34,7 +34,7 @@ FILE* openFile(const char* mode) {
 void readFilms(FILM** arrayFilms) {
 	FILE* pF = openFile("rb");
 	fread(&noFilms, sizeof(int), 1, pF);
-	fseek(pF, noFilms * sizeof(FILM), SEEK_CUR);
+	fseek(pF, noFilms * sizeof(FILM) - sizeof(int), SEEK_CUR);
 	fread(&nextID, sizeof(int), 1, pF);
 	*arrayFilms = (FILM*)calloc(noFilms, sizeof(FILM));
 	if (*arrayFilms == NULL) {
@@ -68,6 +68,9 @@ void addFilm() {
 	FILM tempFilm = { 0 };
 
 	FILE* pF = openFile("rb+");
+
+	fseek(pF, noFilms * sizeof(FILM), SEEK_SET);
+	fread(&nextID, sizeof(int), 1, pF);
 
 	tempFilm.id = nextID;
 
@@ -171,26 +174,25 @@ void removeFilm() {
 
 	showAllFilms(0);
 
-	do {
-		printf("\nUnesite ID filma koji želite obrisati: ");
-		scanf(" %d", &id);
-	} while (id < 0 || id >= noFilms);
+	printf("\nUnesite ID filma koji zelite obrisati: ");
+	scanf(" %d", &id);
 
 	FILE* pF = fopen("films.bin", "wb+");
 	if (pF == NULL) {
-		printf("\nGreška pri otvaranju datoteke films.bin!\n");
+		printf("\nGreska pri otvaranju datoteke films.bin!\n");
 		return;
 	}
 
 	fseek(pF, sizeof(int), SEEK_SET);
 
-	for(int i = 0;i < noFilms; i++) {
+	noFilms--;
+
+	for(int i = 0;i <= noFilms; i++) {
 		if((arrayFilms + i)->id != id) {
 			fwrite((arrayFilms + i), sizeof(FILM), 1, pF);
 		}
 	}
 
-	noFilms--;
 	rewind(pF);
 	fwrite(&noFilms, sizeof(int), 1, pF);
 
@@ -330,10 +332,22 @@ void filmSearch() {
 
 void deleteFile() {
 	printf("Zelite li uistinu obrisati datoteku 'films.bin'?\n");
-	printf("Utipkajte 'da' ako uistinu zelite obrisati datoteku u suprotno utipkajte 'ne' !\n");
+	printf("Utipkajte 'da' ako uistinu zelite obrisati datoteku u suprotnom utipkajte 'ne' !\n");
 	char potvrda[3] = { '\0' };
 	scanf("%2s", potvrda);
 	if (!strcmp("da", potvrda)) {
-		remove("films.bin") == 0 ? printf("Uspjesno obrisana datoteka!\n") : printf("Neuspjesno brisanje datoteke!\n");
+
+		potvrda[0] = '\0';
+
+		printf("Utipkajte 'da' ako zelite napraviti backup u suprotnom utipkajte 'ne' !\n");
+
+		scanf("%2s", potvrda);
+
+		if (!strcmp("da", potvrda)) {
+			rename("films.bin", "films_backup.bin");
+		}
+		else {
+			remove("films.bin") == 0 ? printf("Uspjesno obrisana datoteka!\n") : printf("Neuspjesno brisanje datoteke!\n");
+		}
 	}
 }
